@@ -44,12 +44,16 @@ router.post("/book", async (req, res) => {
       return res.status(404).json({ message: "Date not found" });
     }
 
-    const slot = data.slots.find(s => s.time === time);
+    // 🔍 Find index (IMPORTANT)
+    const slotIndex = data.slots.findIndex(s => s.time === time);
 
-    if (!slot) {
+    if (slotIndex === -1) {
       return res.status(404).json({ message: "Slot not found" });
     }
 
+    const slot = data.slots[slotIndex];
+
+    // 🔴 VALIDATIONS
     if (slot.isBlocked) {
       return res.status(400).json({ message: "Slot is blocked" });
     }
@@ -58,13 +62,15 @@ router.post("/book", async (req, res) => {
       return res.status(400).json({ message: "Slot not available" });
     }
 
-    slot.subSlots -= 1;
+    // ✅ UPDATE safely
+    data.slots[slotIndex].subSlots -= 1;
+
     await data.save();
 
     res.json({ message: "Booking successful" });
 
   } catch (err) {
-    console.error(err);
+    console.error("BOOK ERROR:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
