@@ -38,24 +38,31 @@ router.post("/book", async (req, res) => {
   try {
     const { date, time } = req.body;
 
-    const updated = await Slot.findOneAndUpdate(
-      {
-        date,
-        "slots.time": time,
-        "slots.subSlots": { $gt: 0 },
-        "slots.isBlocked": false
-      },
-      {
-        $inc: { "slots.$.subSlots": -1 }
-      },
-      { new: true }
-    );
+    const data = await Slot.findOne({ date });
 
-    if (!updated) {
+    if (!data) {
+      return res.status(404).json({ message: "Date not found" });
+    }
+
+    const slot = data.slots.find(s => s.time === time);
+
+    if (!slot) {
+      return res.status(404).json({ message: "Slot not found" });
+    }
+
+    if (slot.isBlocked) {
+      return res.status(400).json({ message: "Slot is blocked" });
+    }
+
+    if (slot.subSlots <= 0) {
       return res.status(400).json({ message: "Slot not available" });
     }
 
+    slot.subSlots -= 1;
+    await data.save();
+
     res.json({ message: "Booking successful" });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });

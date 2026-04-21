@@ -16,8 +16,8 @@ console.log("MONGO_URI:", process.env.MONGO_URI);
 
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ DB ERROR:", err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log("DB ERROR:", err));
 
 app.use("/api", userRoutes);
 app.use("/api/admin", adminRoutes);
