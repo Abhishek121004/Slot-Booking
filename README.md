@@ -1,4 +1,4 @@
-﻿Slot Booking Backend
+﻿📅 Slot Booking Backend
 
 A backend system for managing slot bookings, built using Node.js, Express, and MongoDB. This project provides APIs to create, fetch, and update booking slots efficiently.
 
@@ -18,7 +18,6 @@ Express.js – Backend framework
 MongoDB – Database
 Mongoose – ODM for MongoDB
 REST APIs – Communication layer
-
 ⚙️ Features
 📌 Get slots for a specific date
 🔒 Block a slot (mark as unavailable)
