@@ -18,6 +18,7 @@ Express.js – Backend framework
 MongoDB – Database
 Mongoose – ODM for MongoDB
 REST APIs – Communication layer
+
 ⚙️ Features
 📌 Get slots for a specific date
 🔒 Block a slot (mark as unavailable)
